@@ -83,8 +83,8 @@ class CommandTest {
                 "BACK - move backwards by a specified number of steps\n" +
                 "LEFT - turn left 90 degrees\n" +
                 "RIGHT - turn right 90 degrees\n" +
-                "SPRINT - to sprint forward in step" +
-                "REPLAY - to replay commands" +
+                "SPRINT - to sprint forward in step\n" +
+                "REPLAY - to replay commands\n" +
                 "REPLAY REVERSED - to replay commands in reverse", robot.getStatus());
     }
     @Test
@@ -99,6 +99,7 @@ class CommandTest {
         Command test = new LeftCommand();
         assertEquals("left", test.getName());
     }
+
     @Test
     void executeLeftCommand() {
         Robot robot = new Robot("CrashTestDummy");
@@ -106,11 +107,13 @@ class CommandTest {
         assertTrue(left.execute(robot));
         assertEquals("Turned left.", robot.getStatus());
     }
+
     @Test
     void getRightCommand() {
         Command test = new RightCommand();
         assertEquals("right", test.getName());
     }
+
     @Test
     void executeRightCommand() {
         Robot robot = new Robot("CrashTestDummy");
@@ -118,15 +121,18 @@ class CommandTest {
         assertTrue(right.execute(robot));
         assertEquals("Turned right.", robot.getStatus());
     }
+
     @Test
     void getSprintName() {
         Command  test = new SprintCommand("5");
         assertEquals("sprint", test.getName());
         assertEquals("5", test.getArgument());
     }
+
     @Test
     void keepCommandAndGetCommand(){
         Command test = new ReplayCommand();
+        test.getCommandHistory().clear();
         test.setCommandHistory("forward 10");
         test.setCommandHistory("forward 5");
         test.setCommandHistory("left");
@@ -137,17 +143,20 @@ class CommandTest {
         test.setCommandHistory("replay reversed");
         assertEquals("[forward 10, forward 5, left, right]",test.getCommandHistory().toString());
     }
+
     @Test
     void getReplayName() {
         Command test = new ReplayCommand();
         assertEquals("replay", test.getName());
     }
+
     @Test
     void getReplayWithArg(){
         Command test = new ReplayCommand("2");
         assertEquals("replay", test.getName());
         assertEquals("2", test.getArgument());
     }
+
     @Test
     void sortCommandHistory(){
         Command test = new ReplayCommand("2");
@@ -159,9 +168,7 @@ class CommandTest {
         List newCommandHistory = test.sortCommandHistoryIndexToLast(test.getArgument(), commandHistory);
         assertEquals("[left, right]", newCommandHistory.toString());
     }
-//    @Test
-//    void testSortArgumentOneDigit() {
-//        Command test = new ReplayCommand("2");
-//        assertEquals("2",);
-//    }
+
+
+
 }

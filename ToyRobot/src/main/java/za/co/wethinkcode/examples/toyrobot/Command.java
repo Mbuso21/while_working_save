@@ -33,7 +33,8 @@ public abstract class Command {
 
     public List sortCommandHistoryIndexToLast(String fromHereReplay, List getCommandHistory) {
         int replayIndex = Integer.parseInt(fromHereReplay);
-        return getCommandHistory.subList(replayIndex-1,getCommandHistory.size());
+        int lastIndex = getCommandHistory.size();
+        return getCommandHistory.subList(lastIndex-replayIndex,lastIndex);
     }
 
     public List sortCommandHistoryIndexToIndex(String fromHereToThere, List commandHistory){
@@ -44,11 +45,18 @@ public abstract class Command {
         else{ return commandHistory.subList(secondNum-2, firstNum-2);}
     }
 
+
     public List sortCommandInstruction(String[] argSplit, List commandHistory){
 
         if(getArgument().contains("reversed")) {
 
-            if(argSplit.length == 2){}
+            Collections.reverse(commandHistory);
+            if(argSplit.length == 2){
+                return commandHistory;
+            }else if(argSplit[2].matches("[0-9]")) {
+                int toIndex = Integer.parseInt(argSplit[2]);
+                return commandHistory.subList(0,toIndex);
+            }
 
         }else if(argSplit.length == 2){
 
@@ -57,9 +65,12 @@ public abstract class Command {
             }else if(argSplit[1].split("-").length == 2) {
                 return sortCommandHistoryIndexToIndex(argSplit[1], commandHistory);
             }
-            else {return commandHistory;}
-
-        }else { return commandHistory; }
+            else {
+                return commandHistory;
+            }
+        }else {
+            return commandHistory;
+        }
         return commandHistory;
     }
 
