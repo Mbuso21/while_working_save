@@ -47,6 +47,10 @@ public abstract class Command {
 
 
     public List sortCommandInstruction(String[] argSplit, List commandHistory){
+        /*
+            Method
+            String[] argSplit contains a split string where argSplit[0] == "replay"
+         */
 
         if(getArgument().contains("reversed")) {
 
@@ -54,8 +58,13 @@ public abstract class Command {
             if(argSplit.length == 2){
                 return commandHistory;
             }else if(argSplit[2].matches("[0-9]")) {
-                int toIndex = Integer.parseInt(argSplit[2]);
-                return commandHistory.subList(0,toIndex);
+
+                return commandHistory.subList(0,Integer.parseInt(argSplit[2]));
+            }else if(argSplit[2].split("-").length == 2) {
+                Collections.reverse(commandHistory);
+                List revCommandHistory = sortCommandHistoryIndexToIndex(argSplit[2], commandHistory);
+                Collections.reverse(revCommandHistory);
+                return revCommandHistory;
             }
 
         }else if(argSplit.length == 2){
@@ -63,14 +72,16 @@ public abstract class Command {
             if(argSplit[1].matches("[0-9]")){
                 return sortCommandHistoryIndexToLast(argSplit[1], commandHistory);
             }else if(argSplit[1].split("-").length == 2) {
+
                 return sortCommandHistoryIndexToIndex(argSplit[1], commandHistory);
-            }
-            else {
+            }else {
                 return commandHistory;
             }
+
         }else {
             return commandHistory;
         }
+
         return commandHistory;
     }
 

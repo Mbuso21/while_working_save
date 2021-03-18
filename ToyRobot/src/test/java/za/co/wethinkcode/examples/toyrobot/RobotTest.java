@@ -414,6 +414,33 @@ class RobotTest {
     }
 
     @Test
+    void testReplayRangeReversedFullString() {
+        InputStream mockedInput = new ByteArrayInputStream("HAL\nforward 10\nforward 20\nback 30\nback 40\nreplay reversed 4-2\noff\n".getBytes());
+        System.setIn(mockedInput);
+        Play.main(new String[]{"text", "EmptyMaze"});
+        String actualOutput = outputStreamCaptor.toString().trim();
+        String expectedOutput = "What do you want to name your robot?\n" +
+                "Hello Kiddo!\n" +
+                "Loaded EmptyMaze\n" +
+                "[0,0] HAL> Ready\n" +
+                "HAL> What must I do next?\n" +
+                "[0,10] HAL> Moved forward by 10 steps.\n" +
+                "HAL> What must I do next?\n" +
+                "[0,30] HAL> Moved forward by 20 steps.\n" +
+                "HAL> What must I do next?\n" +
+                "[0,0] HAL> Moved back by 30 steps.\n" +
+                "HAL> What must I do next?\n" +
+                "[0,-40] HAL> Moved back by 40 steps.\n" +
+                "HAL> What must I do next?\n" +
+                "[0,-20] HAL> Moved forward by 20 steps.\n" +
+                "[0,-10] HAL> Moved forward by 10 steps.\n" +
+                "[0,-10] HAL> replayed 2 commands.\n" +
+                "HAL> What must I do next?\n" +
+                "[0,-10] HAL> Shutting down...";
+        assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
     void testReplayRangeReversed() {
         InputStream mockedInput = new ByteArrayInputStream("HAL\nforward 10\nforward 20\nback 30\nback 40\nreplay reversed 4-2\noff\n".getBytes());
         System.setIn(mockedInput);
