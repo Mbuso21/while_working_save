@@ -60,7 +60,9 @@ public abstract class Command {
             }else if(argSplit[2].matches("[0-9]")) {
 
                 return commandHistory.subList(0,Integer.parseInt(argSplit[2]));
+
             }else if(argSplit[2].split("-").length == 2) {
+
                 Collections.reverse(commandHistory);
                 List revCommandHistory = sortCommandHistoryIndexToIndex(argSplit[2], commandHistory);
                 Collections.reverse(revCommandHistory);
